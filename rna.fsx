@@ -6,10 +6,10 @@ open Expecto
 
 let translate (nucleo: Nucleobase) =
     match nucleo with
-    | T -> U
-    | Nucleobase.A -> A
-    | Nucleobase.G -> G
-    | Nucleobase.C -> C
+    | T -> RNA.U
+    | A -> RNA.A
+    | G -> RNA.G
+    | C -> RNA.C
 
 let problem (input: string) =
     input

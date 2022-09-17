@@ -16,8 +16,9 @@ let NucleobaseOfChar =
     | 't' -> Some T
     | _ -> None
 
-type Ribonucleobase =
-    | A
-    | C
-    | G
-    | U
+module RNA =
+    type Ribonucleobase =
+        | A
+        | C
+        | G
+        | U
