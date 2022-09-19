@@ -16,6 +16,10 @@ let NucleobaseOfChar =
     | 't' -> Some T
     | _ -> None
 
+let readData fileName =
+    System.IO.File.ReadLines("data/" + fileName)
+    |> Seq.head
+
 module RNA =
     type Ribonucleobase =
         | A
