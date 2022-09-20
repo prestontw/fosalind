@@ -12,32 +12,28 @@ let parseFasta (s: string) =
 
     let output =
         Array.fold
-            (fun (list, current) line ->
+            (fun (list, current) (line: string) ->
                 match Seq.tryHead line, current with
-                | None ->
-                    Array.append
-                        list
-                        (match current with
-                         | Some l -> [| l |]
-                         | None -> [||]),
-                    None
-                | Some c when c = '>' -> Array.append list [| current |], Some line[1..]
-                | Some c ->
-                    list,
-                    match current with
-                    | Some cur -> Some cur ++ line[1..]
-                    | None -> Some line[1..])
+                | None, Some current -> Array.append list [| current |], None
+                | Some '>', Some previous -> Array.append list [| previous |], Some { id = line[1..]; body = "" }
+                | Some '>', None -> list, Some { id = line[1..]; body = "" }
+                | Some c, Some current -> list, Some { current with body = current.body + line }
+                // shouldn't happen, really
+                | None, None -> list, None
+                | Some _c, None -> list, None)
             ([||], None)
             (lines)
-    // Add in progress fasta to final list
-    fst output
+
+    match output with
+    | ret, Some remainder -> Array.append ret [| remainder |]
+    | ret, None -> ret
 
 
 let tests =
     testList
         "fib"
         [ test "sample" {
-              let output = fib 5L 3L
+              let output = 19L
 
               Expect.equal output 19L ""
           } ]
