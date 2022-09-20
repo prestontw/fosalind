@@ -62,11 +62,11 @@ module RNA =
         | 'A'
         | 'a' -> Some A
         | 'C'
-        | 'c' -> Some A
+        | 'c' -> Some C
         | 'G'
-        | 'g' -> Some A
+        | 'g' -> Some G
         | 'U'
-        | 'u' -> Some A
+        | 'u' -> Some U
         | _ -> None
 
     let encode a b c =
