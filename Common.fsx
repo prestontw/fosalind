@@ -17,7 +17,12 @@ let NucleobaseOfChar =
     | _ -> None
 
 let readData fileName =
-    System.IO.File.ReadLines("data/" + fileName)
+    System.IO.File.ReadAllText("data/" + fileName)
+
+let readFirstLine filename : string =
+    filename
+    |> readData
+    |> fun s -> s.Split "\n"
     |> Seq.head
 
 module RNA =
