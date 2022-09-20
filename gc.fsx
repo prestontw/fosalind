@@ -4,38 +4,54 @@
 open Common
 open Expecto
 
+let GCContent (body: string) =
+    let length = float body.Length
 
-type FastaRecord = { id: string; body: string }
+    let gCount =
+        body
+        |> String.filter (fun x -> x = 'G')
+        |> String.length
+        |> float
+        |> fun f -> f * 100.0
 
-let parseFasta (s: string) =
-    let lines = s.Split "\n"
+    let cCount =
+        body
+        |> String.filter (fun c -> c = 'C')
+        |> String.length
+        |> float
+        |> fun f -> f * 100.0
 
-    let output =
-        Array.fold
-            (fun (list, current) (line: string) ->
-                match Seq.tryHead line, current with
-                | None, Some current -> Array.append list [| current |], None
-                | Some '>', Some previous -> Array.append list [| previous |], Some { id = line[1..]; body = "" }
-                | Some '>', None -> list, Some { id = line[1..]; body = "" }
-                | Some c, Some current -> list, Some { current with body = current.body + line }
-                // shouldn't happen, really
-                | None, None -> list, None
-                | Some _c, None -> list, None)
-            ([||], None)
-            (lines)
+    (gCount + cCount) / length
 
-    match output with
-    | ret, Some remainder -> Array.append ret [| remainder |]
-    | ret, None -> ret
+let problem input =
+    input
+    |> parseFasta
+    |> Array.map (fun record -> record.id, record.body |> GCContent)
+    |> Array.maxBy (fun (_id, percentage) -> percentage)
+    |> fun (id, percentage) -> sprintf "%s\n%f" id percentage
 
 
 let tests =
     testList
-        "fib"
+        "gc"
         [ test "sample" {
-              let output = 19L
+              let output =
+                  """>Rosalind_6404
+CCTGCGGAAGATCGGCACTAGAATAGCCAGAACCGTTTCTCTGAGGCTTCCGGCCTTCCC
+TCCCACTAATAATTCTGAGG
+>Rosalind_5959
+CCATCGGTAGCGCATCCTTAGTCCAATTAAGTCCCTATCCAGGCGCTCCGCCGAAGGTCT
+ATATCCATTTGTCAGCAGACACGC
+>Rosalind_0808
+CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGAC
+TGGGAACCTGCGGGCAGTAGGTGGAAT"""
+                  |> problem
 
-              Expect.equal output 19L ""
+              Expect.equal
+                  output
+                  """Rosalind_0808
+60.919540"""
+                  ""
           } ]
 
 let main = runTestsWithCLIArgs [] [||] tests
