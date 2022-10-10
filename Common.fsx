@@ -163,3 +163,5 @@ let parseFasta (s: string) =
 let tee x =
     printfn "%A" x
     x
+
+let toString a = a.ToString()
