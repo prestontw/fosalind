@@ -11,7 +11,7 @@
       {
         devShell = with pkgs; mkShell {
           buildInputs = [
-            dotnet-sdk_7
+            dotnet-sdk_6
           ];
         };
       });
