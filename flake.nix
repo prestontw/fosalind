@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/df2bcbbd1c2aa144261cf1b0003c889c075dc693";
     utils.url = "github:numtide/flake-utils";
   };
   outputs = { self, nixpkgs, utils, ... }:
@@ -11,7 +11,7 @@
       {
         devShell = with pkgs; mkShell {
           buildInputs = [
-            dotnet-sdk_6
+            dotnet-sdk_7
           ];
         };
       });
