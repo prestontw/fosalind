@@ -13,6 +13,9 @@
           buildInputs = [
             dotnet-sdk_6
           ];
+          shellHook = ''
+            alias code='/Applications/Visual\ Studio\ Code.app/Contents/MacOS/Electron'
+          '';
         };
       });
 }
